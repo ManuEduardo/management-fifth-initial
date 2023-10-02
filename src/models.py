@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Float
 from sqlalchemy.orm import relationship
 
-from database import Base
+from src.database import Base
 
 class Position(Base):
     __tablename__ = "positions"
