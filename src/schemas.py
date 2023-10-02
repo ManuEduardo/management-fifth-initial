@@ -27,5 +27,13 @@ class Player(ItemBase):
     class Config:
         orm_mode = True
 
+class NewPlayer(BaseModel):
+    name: str
+    age: int
+    avegare_points: float
+    tshirt_number: int
+    position: int
+    team : int
+
 class TeamPlayers(Team):
     players: list[Player]

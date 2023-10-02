@@ -7,7 +7,6 @@ from src.utils import get_config
 config = get_config()
 SQLALCHEMY_DATABASE_URL = config.get("databases").get("sql_string")
 
-print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

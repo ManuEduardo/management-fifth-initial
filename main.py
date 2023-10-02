@@ -3,8 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.database import SessionLocal, engine
 from src.services import player_services, team_services
-from src import models
-from src import schemas
+from src import models, schemas
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -38,11 +37,19 @@ def get_player(player_id: int, db: Session = Depends(get_db)):
     return db_player
 
 
+@app.post('/api/player/', response_model=schemas.Player)
+def post_player(new_player: schemas.NewPlayer, db: Session = Depends(get_db)):
+    db_player = player_services.post_player(db, new_player)
+    if db_player is None:
+        raise HTTPException(status_code=404, detail="Players not found")
+    return db_player
+
+
 @app.get('/api/players/tshirt/{player_tshirt}', response_model=list[schemas.Player])
 def get_players_tshirt(player_tshirt: int, db: Session = Depends(get_db)):
     db_players = player_services.get_players_tshirt(db, player_tshirt)
     if db_players is None:
-        raise HTTPException(status_code=404, detail="Players not found")
+        raise HTTPException(status_code=406, detail="Players no accepted")
     return db_players
 
 
