@@ -1,12 +1,10 @@
-import constants
+from sqlalchemy.orm import Session
 
-class PlayerServices:
-    def __init__(self):
-        self.players = constants.EQUIPO
-        pass
+import models
 
-    def get_player(self, number: int) -> constants.JugadorNBA:
-        for player in self.players:
-            print(player)
-            if number == player.numero_camiseta:
-                return player
+def get_player(db: Session, player_id: int):
+    return db.query(models.Player).filter(models.Player.id == player_id).first()
+
+def get_players_tshirt(db: Session, player_tshirt: int):
+    return db.query(models.Player).filter(models.Player.tshirt_number == player_tshirt)
+
