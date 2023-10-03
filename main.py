@@ -49,7 +49,7 @@ def post_player(new_player: schemas.NewPlayer, db: Session = Depends(get_db)):
 def get_players_tshirt(player_tshirt: int, db: Session = Depends(get_db)):
     db_players = player_services.get_players_tshirt(db, player_tshirt)
     if db_players is None:
-        raise HTTPException(status_code=406, detail="Players no accepted")
+        raise HTTPException(status_code=406, detail="Tshirt no accepted")
     return db_players
 
 
@@ -59,3 +59,30 @@ def get_team_players(team_id: int, db: Session = Depends(get_db)):
     if db_team_players is None:
         raise HTTPException(status_code=404, detail="Players not found")
     return db_team_players
+
+# Mod 
+@app.get('/api/players/position/{player_position}', response_model=list[schemas.Player])
+def get_players_position(player_position: int, db: Session = Depends(get_db)):
+    db_players = player_services.get_players_position(db, player_position)
+    if db_players is None:
+        raise HTTPException(status_code=406, detail="Position no accepted")
+    return db_players
+
+# Mod 2
+@app.delete('/api/player/{player_id}', response_model=schemas.Player)
+def delete_player(player_id: int, db: Session = Depends(get_db)):
+    db_delplayer = player_services.del_player(db, player_id)
+    if db_delplayer is None:
+        raise HTTPException(status_code=404, detail="Player not found")
+    return db_delplayer
+
+# Mod 3
+@app.put("/api/player/{player_id}")
+def update_player(updated_player: schemas.Player, db: Session = Depends(get_db)):
+
+    db_player = player_services.update_player(db, updated_player)
+    
+    if db_player is None:
+        raise HTTPException(status_code=404, detail="Player not found")
+    
+    return db_player
